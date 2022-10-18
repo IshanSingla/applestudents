@@ -1,0 +1,39 @@
+name: Backend
+on:
+  push:
+    branches: [ "backend" ]
+  pull_request:
+    branches: [ "backend" ]
+
+jobs:
+
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v3          
+
+      - name: stop existing container and remove existing image
+        continue-on-error: true
+        run: |
+          sudo docker-compose down
+          sudo docker rmi -f applebackend
+          sudo docker images
+          sudo docker ps -a
+          sudo docker ps
+
+      - name: Creating Env File
+        continue-on-error: true
+        run: |
+          touch .env
+          echo MONGO_ATLAS=${{ secrets.MONGO_ATLAS }} >> .env
+          echo MONGO_ATLAS=${{ secrets.MONGO_ATLAS }} >> .env
+          echo GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }} >> .env
+          echo GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }} >> .env
+          echo JWT_SECRET=${{ secrets.JWT_SECRET }} >> .env
+          echo PORT=${{ secrets.PORT }} >> .env
+          echo ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }} >> .env
+
+      - name: Creating / Starting container
+        run: |
+          sudo docker-compose up -d 
+          sudo docker ps

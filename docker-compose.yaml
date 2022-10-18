@@ -1,0 +1,11 @@
+version: "3"
+services:
+  backend:
+    restart: always
+    build:
+      context: ./
+      dockerfile: dockerfile
+    container_name: applebackend
+    image: applebackend
+    ports:
+      - "5060:5050"
